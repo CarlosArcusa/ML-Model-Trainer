@@ -14,13 +14,13 @@ from io import BytesIO
 # Configuration
 st.set_page_config(layout="wide")
 
-# Seaborn Datasets
+# --- Seaborn Datasets
 seaborn_datasets = ["iris", "tips", "penguins", "titanic", "car_crashes"]
 
 # Helper Functions
 @st.cache_data 
 def load_data(source_option, uploaded_file=None, selected_dataset=None):
-    """Loads data based on user selection."""
+    # Loads data based on user selection.
     try:
         if source_option == "Seaborn Dataset" and selected_dataset:
             if selected_dataset in seaborn_datasets:
@@ -56,7 +56,7 @@ if df is not None:
 
     st.header("2. Configuration")
     col_config1, col_config2 = st.columns(2)
-    # --- Configuration Form ---
+    # Configuration Form
     with st.form("ml_config_form"):
         with col_config1: 
             st.subheader("Feature Selection")
@@ -80,7 +80,7 @@ if df is not None:
                 if task_type == "Classification" and nunique > 50: st.warning(">50 unique categories.")
                 if task_type: st.info(f"Detected Task: **{task_type}**")
             else: st.warning("Select target.")
-        with col_config2: # Model/Parameters
+        with col_config2: 
             st.subheader("Model Selection & Parameters")
             model_options = []; model_type = None
             if task_type == "Regression": model_options = ["Linear Regression", "Random Forest Regressor"]
@@ -104,7 +104,7 @@ if df is not None:
 
         st.header("3. Results")
         try:
-            # --- 1. Preprocessing ---
+            # 1. Preprocessing
             X = df[selected_features].copy(); y = df[target_var].copy()
             if selected_categorical: X = pd.get_dummies(X, columns=selected_categorical, drop_first=True, dtype=int)
             final_feature_names = X.columns.tolist()
@@ -169,7 +169,6 @@ if df is not None:
                         try: st.dataframe(pd.DataFrame(cm, index=labels_short, columns=labels_short))
                         except: st.dataframe(pd.DataFrame(cm))
                      else: st.dataframe(pd.DataFrame(cm))
-
 
             # 6. Visualizations
             st.subheader("Visualizations")
@@ -242,7 +241,7 @@ if df is not None:
 
                     except Exception as e: st.warning(f"Could not plot importance: {e}")
                     finally:
-                        if not plot_imp_success: st.info("Feature importance not available for this model.") # Show message if plot failed or df is None
+                        if not plot_imp_success: st.info("Feature importance not available for this model.") 
                         plt.close(fig_imp)
 
                 # Plot 3: ROC Curve 
@@ -264,7 +263,7 @@ if df is not None:
                         if not plot_roc_success:
                              if not is_binary_classification: st.info("ROC curve visualization is typically shown for binary classification tasks.")
                              elif y_prob is None: st.info("ROC curve could not be generated (predict_proba unavailable or failed).")
-                             else: st.info("ROC Curve could not be generated.") # Generic fallback
+                             else: st.info("ROC Curve could not be generated.") 
                         plt.close(fig_roc)
 
             # 7. Model Export
