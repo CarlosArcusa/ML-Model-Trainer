@@ -14,7 +14,7 @@ from io import BytesIO
 # Configuration
 st.set_page_config(layout="wide")
 
-# --- Seaborn Datasets
+# Seaborn Datasets
 seaborn_datasets = ["iris", "tips", "penguins", "titanic", "car_crashes"]
 
 # Helper Functions
